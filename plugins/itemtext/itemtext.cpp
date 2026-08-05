@@ -149,7 +149,10 @@ void ItemText::updateSize(QSize maximumSize, int idealWidth)
     const int scrollBarWidth = verticalScrollBar()->width();
     setMaximumHeight( maximumSize.height() );
     setFixedWidth(idealWidth);
-    m_textDocument.setTextWidth(idealWidth - scrollBarWidth);
+    const qreal textWidth = idealWidth - scrollBarWidth;
+    // QTextDocument relays out all blocks even if the width is unchanged.
+    if (!qFuzzyCompare(m_textDocument.textWidth(), textWidth))
+        m_textDocument.setTextWidth(textWidth);
 
     const bool noWrap = maximumSize.width() > idealWidth;
     QTextOption option = m_textDocument.defaultTextOption();

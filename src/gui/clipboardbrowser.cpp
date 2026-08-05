@@ -558,7 +558,9 @@ void ClipboardBrowser::preloadCurrentPage()
     const QRect rect = viewport()->contentsRect();
     const int top = rect.top();
     const auto firstVisibleIndex = indexNear(top);
-    preload(rect.height(), 1, firstVisibleIndex);
+    const int firstVisibleHeight =
+        rect.intersected(visualRect(firstVisibleIndex)).height();
+    preload(rect.height() - firstVisibleHeight, 1, firstVisibleIndex);
 }
 
 void ClipboardBrowser::preload(int pixels, int direction, const QModelIndex &start)

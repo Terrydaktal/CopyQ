@@ -2,6 +2,8 @@
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
+/.qt/
+/src/.lupdate/
 
 # Generated Visual Studio files
 /plugins/Debug/
@@ -19,6 +21,8 @@ cmake_install.cmake
 /plugins/Makefile
 /plugins/*/Makefile
 /src/Makefile
+/src/miniaudio/Makefile
+/src/platform/x11/systemclipboard/Makefile
 /Makefile
 
 # Generated Qt files
