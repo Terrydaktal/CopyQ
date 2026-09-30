@@ -57,6 +57,7 @@ private slots:
     void commandShowHideRapid();
     void commandShowAt();
     void commandFocused();
+    void windowGeometryGuardScreenChange();
 
     void commandsUnicode();
 

@@ -14,6 +14,9 @@ class WindowGeometryGuard final : public QObject
 public:
     static void create(QWidget *window);
 
+    static bool shouldRemapOnScreenChange(
+        bool isMousePositionSupported, bool isModal, bool isVisible, bool isMinimized);
+
     bool eventFilter(QObject *object, QEvent *event) override;
 
 private:

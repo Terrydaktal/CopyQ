@@ -8,6 +8,7 @@
 #include "common/mimetypes.h"
 #include "common/sleeptimer.h"
 #include "common/version.h"
+#include "gui/windowgeometryguard.h"
 
 #include <QProcess>
 
@@ -47,6 +48,18 @@ QVariantMap secretData(const QByteArray &text)
 }
 
 } // namespace
+
+
+void CoreTests::windowGeometryGuardScreenChange()
+{
+    const auto shouldRemap = &WindowGeometryGuard::shouldRemapOnScreenChange;
+
+    QVERIFY(shouldRemap(false, false, true, false));
+    QVERIFY(!shouldRemap(false, false, true, true));
+    QVERIFY(!shouldRemap(false, false, false, false));
+    QVERIFY(!shouldRemap(false, true, true, false));
+    QVERIFY(!shouldRemap(true, false, true, false));
+}
 
 
 void CoreTests::pipingCommands()

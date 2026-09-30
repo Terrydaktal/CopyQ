@@ -88,6 +88,12 @@ void WindowGeometryGuard::create(QWidget *window)
         new WindowGeometryGuard(window);
 }
 
+bool WindowGeometryGuard::shouldRemapOnScreenChange(
+    bool isMousePositionSupported, bool isModal, bool isVisible, bool isMinimized)
+{
+    return !isMousePositionSupported && !isModal && isVisible && !isMinimized;
+}
+
 bool WindowGeometryGuard::eventFilter(QObject *, QEvent *event)
 {
     const QEvent::Type type = event->type();
@@ -205,15 +211,19 @@ void WindowGeometryGuard::onScreenChanged()
         return;
     }
 
-    if (isMousePositionSupported || m_window->isModal()) {
-        ::restoreWindowGeometry(m_window, true);
-    } else if ( m_window->isVisible() ) {
+    if ( shouldRemapOnScreenChange(
+             isMousePositionSupported,
+             m_window->isModal(),
+             m_window->isVisible(),
+             m_window->isMinimized() ) ) {
         // WORKAROUND: Center window position on Sway window compositor which
         // does not support changing window position.
         m_window->hide();
         ::restoreWindowGeometry(m_window, true);
         m_window->show();
     } else {
+        // A minimized QWidget is still visible. Keep its Wayland surface
+        // mapped instead of recreating it while outputs are changing.
         ::restoreWindowGeometry(m_window, true);
     }
 }
